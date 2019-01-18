@@ -11,8 +11,8 @@ public class LanguageDetector {
     private String content;
 
     private HashMap<String, Integer> chars;
-    private HashMap<String, Double> englishVowelPercentages,
-            englishVowelDistribution;
+    private HashMap<String, Double> englishVowelPercentages;
+    private HashMap<String, Double> englishVowelDistribution;
 
     private int charCount;
 
@@ -27,7 +27,7 @@ public class LanguageDetector {
         // get next lines
         content = scanner.next();
 
-        // create new instances of hasmaps
+        // create new instances of hashmaps
         this.chars = new HashMap<>();
         this.englishVowelPercentages = new HashMap<>();
         this.englishVowelDistribution = new HashMap<>();
@@ -51,7 +51,7 @@ public class LanguageDetector {
         // start with creating a character map
         createCharacterMap();
 
-        // set the distribtuion of the english vowels
+        // set the distribution of the english vowels
         makeEnglishVowelDistributionMap();
 
         // range in what the percentage can deviate.
@@ -63,7 +63,7 @@ public class LanguageDetector {
 
     private void createCharacterMap() {
         //regular expression to get all the letters of the alphabet
-        String regex = "([a-z][A-Z]|)";
+        String regex = "([A-Z]|[a-z])";
         Pattern p = Pattern.compile(regex);
         Matcher matcher = p.matcher(content);
 
@@ -88,8 +88,9 @@ public class LanguageDetector {
             double statisticalPercentage = this.englishVowelPercentages.get(key);
 
             // when one vowel doesn't correspond with the range
-            if (!(percentage + range > statisticalPercentage && percentage - range < statisticalPercentage))
+            if (!(percentage + range > statisticalPercentage && percentage - range < statisticalPercentage)){
                 return false;
+            }
         }
         return true;
     }
@@ -104,9 +105,11 @@ public class LanguageDetector {
         for (Map.Entry<String, Integer> entry : this.chars.entrySet()) {
             String key = entry.getKey();
 
-            for (int i = 0; i < vowels.length; i++)
-                if (vowels[i].equalsIgnoreCase(key))
+            for (int i = 0; i < vowels.length; i++) {
+                if (vowels[i].equalsIgnoreCase(key)){
                     this.englishVowelDistribution.put(key, getPercentage(key));
+                }
+            }
         }
     }
 
@@ -120,7 +123,7 @@ public class LanguageDetector {
         return percentage;
     }
 
-    public boolean isEnglishText() {
+    public boolean isEnglish() {
         return this.englishText;
     }
 }
