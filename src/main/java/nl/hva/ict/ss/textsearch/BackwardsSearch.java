@@ -89,7 +89,6 @@ public class BackwardsSearch {
     }
 
     /**
-     * Returns the number of character compares that where performed during the last search.
      * @return the number of character comparisons during the last search.
      */
     int getComparisonsForLastSearch() {
