@@ -2,8 +2,8 @@ package nl.hva.ict.ss.textsearch;
 
 public class BackwardsSearch {
     /**
-     * Returns index of the right most location where <code>needle</code> occurs within <code>haystack</code>. Searching
-     * starts at the right end side of the text (<code>haystack</code>) and proceeds to the first character (left side).
+     * Returns index of the left most location where <code>needle</code> occurs within <code>haystack</code>. Searching
+     * starts at the left end side of the text (<code>haystack</code>) and proceeds to the first character (left side).
      * @param needle the text to search for.
      * @param haystack the text which might contain the <code>needle</code>.
      * @return -1 if the <code>needle</code> is not found and otherwise the left most index of the first
@@ -11,7 +11,7 @@ public class BackwardsSearch {
      */
     
     private int Radix;     // the radix
-    private int[] right;     // the bad-character skip array // TODO: rename to left
+    private int[] left;     // the bad-character skip array // TODO: rename to left
 
     private char[] pattern;  // store the pattern as a character array
     private String needle;
@@ -25,11 +25,11 @@ public class BackwardsSearch {
         this.needle = needle;
 
         // position of rightmost occurrence of c in the pattern
-        right = new int[Radix];
+        left = new int[Radix];
         for (int c = 0; c < Radix; c++)
-            right[c] = -1;
+            left[c] = -1;
         for (int j = needle.length() - 1; j >= 0; j--)
-            right[needle.charAt(j)] = j;
+            left[needle.charAt(j)] = j;
         
         int needleLength = needle.length();
         int haystackLength = haystack.length();
@@ -39,20 +39,53 @@ public class BackwardsSearch {
         for(int currentIndex = haystackLength - needleLength; currentIndex > 0; currentIndex-= skip){
             skip = 0;
 
-            // search the string from the right to the left
+            // search the string from the left to the left
             for (int needleIndex = 0; needleIndex < needleLength - 1; needleIndex++ ){
                 // compare if chars are the same
                 this.comparisons++;
 
                 if(needle.charAt(needleIndex) != haystack.charAt(needleIndex + currentIndex)){
-                    skip = Math.max(1, needleIndex - right[haystack.charAt(currentIndex+needleIndex)]);
+                    // math max takes care of skip not being smaller than 1
+                    skip = Math.max(1, needleIndex - left[haystack.charAt(currentIndex+needleIndex)]);
                     break;
                 }
             }
             if (skip == 0) return currentIndex;    // found
         }
         return -1;
-       
+
+    }
+
+    public int bmFindLocation(String theNeedle, String theHaystack) {
+        // this is the copied algorithm from https://algs4.cs.princeton.edu/53substring/BoyerMoore.java.html
+        // with renamed variables to prevent confusion/mixing of values
+        int R = 256;
+
+        // position of rightmost occurrence of c in the pattern
+        int[] right = new int[R];
+        for (int c = 0; c < R; c++)
+            right[c] = -1;
+        for (int j = 0; j < theNeedle.length(); j++)
+            right[theNeedle.charAt(j)] = j;
+
+
+        int M = theNeedle.length();
+        int N = theHaystack.length();
+        int skipPerStep;
+        for (int i = 0; i <= N - M; i += skipPerStep) {
+            skipPerStep = 0;
+            for (int j = M-1; j >= 0; j--) {
+                this.comparisons++;
+
+                if (theNeedle.charAt(j) != theHaystack.charAt(i+j)) {
+                    skipPerStep = Math.max(1, j - right[theHaystack.charAt(i+j)]);
+                    break;
+                }
+            }
+            if (skipPerStep == 0) return i;    // found
+        }
+        return -1;                       // not found
+
     }
 
     /**
