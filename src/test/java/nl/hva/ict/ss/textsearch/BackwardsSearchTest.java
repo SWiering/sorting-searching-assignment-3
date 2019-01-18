@@ -26,4 +26,16 @@ public class BackwardsSearchTest {
 
         assertEquals(-1, index);
     }
+
+    @Test
+    public void canFindLastWhenDouble(){
+        int index = searchEngine.findLocation("needle", "theneedleneedle");
+        assertEquals("theneedle".length(), index);
+    }
+
+    @Test
+    public void canFindInStrangeString(){
+        int index = searchEngine.findLocation("needle", "theneneedleedle");
+        assertEquals("thene".length(), index);
+    }
 }

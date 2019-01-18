@@ -10,38 +10,48 @@ public class BackwardsSearch {
      * character of the <code>needle</code>.
      */
     
-    private int R;     // the radix
-    private int[] right;     // the bad-character skip array
+    private int Radix;     // the radix
+    private int[] right;     // the bad-character skip array // TODO: rename to left
 
     private char[] pattern;  // store the pattern as a character array
-    private String needle;  
+    private String needle;
+
+    private int comparisons;
     
     int findLocation(String needle, String haystack) {
-        this.R = 256;
+        this.comparisons = 0;
+
+        this.Radix = 256;
         this.needle = needle;
 
         // position of rightmost occurrence of c in the pattern
-        right = new int[R];
-        for (int c = 0; c < R; c++)
+        right = new int[Radix];
+        for (int c = 0; c < Radix; c++)
             right[c] = -1;
-        for (int j = 0; j < needle.length(); j++)
+        for (int j = needle.length() - 1; j >= 0; j--)
             right[needle.charAt(j)] = j;
         
-        
-        int M = needle.length();
-        int N = haystack.length();
+        int needleLength = needle.length();
+        int haystackLength = haystack.length();
         int skip;
-        for (int i = 0; i <= N - M; i += skip) {
+
+        // start at the end of the string
+        for(int currentIndex = haystackLength - needleLength; currentIndex > 0; currentIndex-= skip){
             skip = 0;
-            for (int j = M-1; j >= 0; j--) {
-                if (needle.charAt(j) != haystack.charAt(i+j)) {
-                    skip = Math.max(1, j - right[haystack.charAt(i+j)]);
+
+            // search the string from the right to the left
+            for (int needleIndex = 0; needleIndex < needleLength - 1; needleIndex++ ){
+                // compare if chars are the same
+                this.comparisons++;
+
+                if(needle.charAt(needleIndex) != haystack.charAt(needleIndex + currentIndex)){
+                    skip = Math.max(1, needleIndex - right[haystack.charAt(currentIndex+needleIndex)]);
                     break;
                 }
             }
-            if (skip == 0) return i;    // found
+            if (skip == 0) return currentIndex;    // found
         }
-        return -1;                       // not found
+        return -1;
        
     }
 
@@ -50,7 +60,7 @@ public class BackwardsSearch {
      * @return the number of character comparisons during the last search.
      */
     int getComparisonsForLastSearch() {
-        return 0;
+        return this.comparisons;
     }
 
 }
