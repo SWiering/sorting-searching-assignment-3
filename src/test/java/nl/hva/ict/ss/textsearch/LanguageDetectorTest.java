@@ -13,8 +13,8 @@ public class LanguageDetectorTest {
     @Before
     public void setup() {
         detector = new LanguageDetector(getClass().getResourceAsStream(resourceMap + "Huffman.java"));
-        dutch = new LanguageDetector(getClass().getResourceAsStream(resourceMap + "Huffman.java"));
-        spanish = new LanguageDetector(getClass().getResourceAsStream(resourceMap + "Huffman.java"));
+        dutch = new LanguageDetector(getClass().getResourceAsStream(resourceMap + "nederlands.txt"));
+        spanish = new LanguageDetector(getClass().getResourceAsStream(resourceMap + "espanol.txt"));
     }
 
     @Test
@@ -24,15 +24,11 @@ public class LanguageDetectorTest {
 
     @Test
     public void isDutch(){
-        System.out.println(dutch.isEnglish());
-
         assertFalse(dutch.isEnglish());
     }
 
     @Test
     public void isSpanish(){
-        System.out.println(spanish.isEnglish());
-
         assertFalse(spanish.isEnglish());
     }
 
