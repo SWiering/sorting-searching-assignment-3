@@ -57,7 +57,7 @@ public class LanguageDetector {
         makeEnglishVowelDistributionMap();
 
         // range in what the percentage can deviate.
-        double rangeOfVariety = 2.023908212565;
+        double rangeOfVariety = 2.03;
 
         this.englishText = detectEnglishText(rangeOfVariety);
     }
