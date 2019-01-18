@@ -7,7 +7,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class LanguageDetectorTest {
-    private LanguageDetector detector, dutch, spanish;
+    private LanguageDetector detector;
+    private LanguageDetector dutch;
+    private LanguageDetector spanish;
     private final String resourceMap = "/edu/princeton/cs/algs4/";
 
     @Before
@@ -31,6 +33,4 @@ public class LanguageDetectorTest {
     public void isSpanish(){
         assertFalse(spanish.isEnglish());
     }
-
-    // Add your tests here. They are allowed to NOT use assertXxxx... :-)
 }

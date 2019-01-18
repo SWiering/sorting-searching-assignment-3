@@ -16,10 +16,12 @@ public class LanguageDetector {
 
     private int charCount;
 
-    private boolean englishText = false;
+    private boolean englishText;
 
 
     public LanguageDetector(InputStream input) {
+        englishText = false;
+
         // new instance scanner
         Scanner scanner = new Scanner(input);
         scanner.useDelimiter("\\Z");
@@ -55,7 +57,7 @@ public class LanguageDetector {
         makeEnglishVowelDistributionMap();
 
         // range in what the percentage can deviate.
-        double rangeOfVariety = 2.5;
+        double rangeOfVariety = 2.023908212565;
 
         this.englishText = detectEnglishText(rangeOfVariety);
     }
