@@ -8,20 +8,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MethodCallsDetector {
-    // Doesn't work due not allowing repetitions in negative lookahead
-//    final private String METHOD_CALL_REGEX = "(?<!(new|private|public|protected).*)(\\w+\\.)?\\w+(?=\\(.*\\))";
+   
     final private String REGEX = "(\\w+\\.)?\\w+(?=\\(.*\\))";
-    private String content; // Once an instance is created this will hold the complete content of the file.
+    private String file;
 
     public MethodCallsDetector(InputStream input) {
-        Scanner sc = new Scanner(input);
-        sc.useDelimiter("\\Z"); // EOF marker
-        content = sc.next();
+        Scanner s = new Scanner(input);
+        s.useDelimiter("\\Z"); // EOF marker
+        file = s.next();
     }
 
     public int getMethodCallsCount() {
         Pattern p = Pattern.compile(REGEX);
-        Matcher m = p.matcher(content);
+        Matcher m = p.matcher(file);
         int methodCallCount = 0;
 
         while (m.find()) {
@@ -33,7 +32,7 @@ public class MethodCallsDetector {
 
     public Set<String> getUniqueMethods() {
         Pattern p = Pattern.compile(REGEX);
-        Matcher m = p.matcher(content);
+        Matcher m = p.matcher(file);
         Set<String> methodCalls = new HashSet<>();
 
         while (m.find()) {
