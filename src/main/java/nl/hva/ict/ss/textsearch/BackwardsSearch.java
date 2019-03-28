@@ -36,7 +36,7 @@ public class BackwardsSearch {
         int skip;
 
         // start at the end of the string
-        for(int currentIndex = haystackLength - needleLength; currentIndex > 0; currentIndex-= skip){
+        for(int currentIndex = haystackLength - needleLength; currentIndex >= 0; currentIndex-= skip){
             skip = 0;
 
             // search the string from the left to the left
