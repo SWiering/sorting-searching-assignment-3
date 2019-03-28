@@ -11,13 +11,12 @@ public class LanguageDetector {
     private String content;
 
     private HashMap<String, Integer> chars;
-    public HashMap<String, Double> englishVowelPercentages;
-    public HashMap<String, Double> englishVowelDistribution;
+    private HashMap<String, Double> englishVowelPercentages;
+    private HashMap<String, Double> englishVowelDistribution;
 
     private int charCount;
 
     private boolean englishText;
-    public double engPercentage;
 
 
     public LanguageDetector(InputStream input) {
@@ -117,13 +116,13 @@ public class LanguageDetector {
     }
 
     private double getPercentage(String string) {
-        if (string == null || string.isEmpty() || string.length() > 1 )
+        if (string.isEmpty() || string.length() > 1 || string == null)
             return -1;
 
         int amount = this.chars.get(string);
-        this.engPercentage = ((double) amount / (double) this.charCount) * 100.0f;
+        double percentage = ((double) amount / (double) this.charCount) * 100.0f;
 
-        return this.engPercentage;
+        return percentage;
     }
 
     public boolean isEnglish() {
